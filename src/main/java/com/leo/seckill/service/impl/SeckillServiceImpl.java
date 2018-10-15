@@ -1,6 +1,6 @@
-package com.leo.seckill.Service.impl;
+package com.leo.seckill.service.impl;
 
-import com.leo.seckill.Service.SeckillService;
+import com.leo.seckill.service.SeckillService;
 import com.leo.seckill.dao.SeckillDao;
 import com.leo.seckill.dao.SuccessKilledDao;
 import com.leo.seckill.dto.Exposer;
@@ -13,6 +13,9 @@ import com.leo.seckill.exception.SeckillCloseException;
 import com.leo.seckill.exception.SeckillException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import java.util.Date;
@@ -23,11 +26,15 @@ import java.util.List;
  * @Date: 2018/10/14
  * @Description:
  */
+@Service
 public class SeckillServiceImpl implements SeckillService {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    //注入service依赖
+    @Autowired
     private SeckillDao seckillDao;
 
+    @Autowired
     private SuccessKilledDao successKilledDao;
 
     private final String salt = "sadadadasdasd12312@!#$!@$@#$@$#$%@asd";
@@ -66,8 +73,15 @@ public class SeckillServiceImpl implements SeckillService {
     }
 
     @Override
+    @Transactional
+    /**
+     * 使用注解控制事务方法的优点：
+     * 1：开发团队一致约定，明确标注事务方法的编程风格
+     * 2：保证事务方法的运行时间尽可能短，不要穿插其他网络操作，RPC/HTTP请求或者剥离到事务方法外部
+     * 3：不是所有的方法都需要事务，如只有一条修改操作，制度操作不需要事务控制
+     */
     public SeckillExecution executeSeckill(long seckillId, long userPhone, String md5) throws SeckillException, RepeatKillException, SeckillCloseException {
-        if (md5 == null || md5.equals(getMD5(seckillId))){
+        if (md5 == null || !md5.equals(getMD5(seckillId))){
             throw new SeckillException("seckill data rewrite");
         }
         //执行秒杀逻辑:减库存，记录购买行为

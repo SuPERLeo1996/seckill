@@ -1,4 +1,4 @@
-package com.leo.seckill.Service;
+package com.leo.seckill.service;
 
 import com.leo.seckill.dto.Exposer;
 import com.leo.seckill.dto.SeckillExecution;
