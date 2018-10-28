@@ -1,5 +1,6 @@
 package com.leo.seckill.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Date;
  * @Date: 2018/10/8
  * @Description:
  */
-public class Seckill {
+public class Seckill{
     private long seckillId;
     private String name;
     private int number;
