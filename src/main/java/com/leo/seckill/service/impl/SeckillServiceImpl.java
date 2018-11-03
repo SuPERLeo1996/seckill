@@ -134,4 +134,10 @@ public class SeckillServiceImpl implements SeckillService {
         }
 
     }
+
+    @Override
+    public SeckillExecution executeSeckillProcedure(long seckillId, long userPhone, String md5) throws SeckillException, RepeatKillException, SeckillCloseException {
+        //todo
+        return null;
+    }
 }
